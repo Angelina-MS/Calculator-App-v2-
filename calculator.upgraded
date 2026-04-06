@@ -1,0 +1,105 @@
+import math
+
+history_file="calculator_history"
+
+def add(a,b):
+    return(a+b)
+
+
+def subtract(a,b):
+    return(a-b)
+
+
+def divide(a,b):
+    if b==0:
+        print("\nError: Cannot divide by zero\n")
+        return None
+    return(a/b)
+
+
+def multiply(a,b):
+    return(a*b)
+
+
+def power(a,b):
+    return (a**b)
+
+
+def clean_input(text):
+    return "".join(char for char in text.lower() if char.isalnum())
+
+
+def show_history():
+    try:
+        with open(history_file,"r") as file:
+            print("\nHistory:\n"+ file.read())
+    except FileNotFoundError:
+        print("No history found yet.")
+
+
+def clear_history():
+    open(history_file,"w").close()
+    print("HISTORY DELETED")
+
+
+
+while True:
+    operations={"+":add,"-":subtract,"*":multiply,"/":divide,"^":power}
+
+    option=clean_input(input("Please select:\n"
+                 "1.Calculate\n"
+                 "2.View history\n"
+                 "3.Clear history\n"))
+    print()
+    
+
+    if option in ["3","clearhistory"]:
+        clear_history()
+
+
+    elif option in ["2","viewhistory"]:
+        show_history()
+    
+    elif option in ["1","calculate"]:
+        while True:
+            try:
+                expression=input("Please enter a calculation(e.g 6 + 2):").strip()
+                
+                for op in operations:
+                    expression=expression.replace(op, f" {op} ").replace("  "," ")
+
+                expression=" ".join(expression.split())
+                a, operation ,b =expression.split()
+
+                a=float(a)
+                b=float(b)
+                print()
+
+                if operation not in operations:
+                    print("\nPlease pick a valid operation\n")
+                    continue
+                break
+            
+            except ValueError:
+                print(" Please enter a valid calculation\n")
+            
+        
+        
+        result=operations[operation](a,b)
+        if result is not None:
+            print("\nAnswer:",result)
+
+        with open (history_file,"a") as file:
+            file.write(f"{a} {operation} {b}={result}\n")
+
+
+        again=clean_input(input("\nWould you like to continue calculating?"))
+
+        if again not in ["yes","yh","yup","ok","yeah","sure"]:
+            print()
+            print("Alright! Have a good day!")
+            break
+        else:
+            continue
+    else:
+        print("\nInvalid option,please try again\n")
