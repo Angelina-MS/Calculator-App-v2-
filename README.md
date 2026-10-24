@@ -10,7 +10,7 @@ Features:
 - Error handling (e.g. divide by zero, invalid input)
 - Calculation history tracking
 
-What I learnt:
+What I learned:
 
 - Error handling (division by 0) 
 - While loops 
